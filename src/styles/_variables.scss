@@ -1,0 +1,68 @@
+@use 'helpers/index' as *;
+
+:root {
+  --bg-dark: oklch(20% 0.01 250deg);
+  --bg: oklch(23% 0.01 250deg);
+  --bg-light: oklch(27% 0.01 250deg);
+  --text: oklch(84% 0.02 80deg);
+  --text-muted: oklch(45% 0.01 250deg);
+  --text-sub: oklch(33% 0.01 250deg);
+  --caret: oklch(75% 0.15 85deg);
+  --primary: oklch(75% 0.15 85deg);
+  --secondary: oklch(45% 0.01 250deg);
+  --error: oklch(55% 0.18 15deg);
+  --error-extra: oklch(38% 0.14 15deg);
+  --success: oklch(62% 0.14 145deg);
+  --warning: oklch(75% 0.15 85deg);
+  --info: oklch(65% 0.15 250deg);
+  --border-color: oklch(45% 0.01 250deg);
+  --border-muted: oklch(33% 0.01 250deg);
+
+  body.light {
+    --bg-dark: oklch(92% 0.005 250deg);
+    --bg: oklch(96% 0.005 250deg);
+    --bg-light: oklch(100% 0 0deg);
+    --text: oklch(23% 0.01 250deg);
+    --text-muted: oklch(45% 0.01 250deg);
+    --text-sub: oklch(65% 0.01 250deg);
+    --caret: oklch(68% 0.15 85deg);
+    --primary: oklch(68% 0.15 85deg);
+    --secondary: oklch(45% 0.01 250deg);
+    --error: oklch(55% 0.18 15deg);
+    --error-extra: oklch(70% 0.12 15deg);
+    --success: oklch(58% 0.14 145deg);
+    --warning: oklch(68% 0.15 85deg);
+    --info: oklch(58% 0.15 250deg);
+    --border-color: oklch(78% 0.01 250deg);
+    --border-muted: oklch(88% 0.005 250deg);
+  }
+
+  --border: var(--border-width-m) solid var(--border-color);
+
+  --border-width-xl: 6px;
+  --border-width-l: 4px;
+  --border-width-m: 3px;
+  --border-width-xm: 2px;
+  --border-width-s: 1px;
+
+  --border-radius-l: 16px;
+  --border-radius-m: 12px;
+  --border-radius: 8px;
+  --border-radius-xs: 6px;
+  --border-radius-xxs: 4px;
+  --border-radius-xxxs: 2px;
+
+  --input-height: 48px;
+
+  --font-family-base: 'Rubik', sans-serif;
+  --font-family-mono: 'Roboto Mono', 'Courier New', Courier, monospace;
+
+  --container-width: #{fluid-to-laptop(
+      $container-desktop-width,
+      $container-laptop-width
+    )};
+  --container-padding-x: 16px;
+
+  --transition-duration: 0.125s;
+  --transition-duration-slow: 0.2s;
+}
