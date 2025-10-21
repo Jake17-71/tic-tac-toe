@@ -1,0 +1,28 @@
+@use '../helpers' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px var(--container-padding-x);
+  background-color: var(--bg-light);
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    color: var(--primary);
+  }
+
+  &__title {
+    @include fluid-text(36, 20);
+
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--text);
+  }
+}

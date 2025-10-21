@@ -10,10 +10,36 @@
     <link rel="stylesheet" href="/src/styles/styles.css" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <script src="/src/main.js" type="module"></script>
-    <title>vite-starter</title>
+    <title>Tic-Tac-Toe</title>
   </head>
   <body>
-    <h1 class="title">Привет, Vite!</h1>
+    <header class="header">
+      <div class="header__logo">
+        <svg class="header__icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 4L28 28M28 4L4 28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span class="header__title">Tic-Tac-Toe</span>
+      </div>
+      <div
+        class="header__theme-icon-inner"
+        data-js-theme-change
+      >
+        <button
+          type="button"
+          class="button button-theme"
+          aria-label="Сменить тему оформления"
+          title="Смена темы оформления"
+          data-js-theme-button
+        >
+        <span
+          class="button-theme-toggle"
+          aria-hidden="true"
+          data-js-theme-button-toggle
+        ></span>
+        </button>
+      </div>
+    </header>
     <div id="app"></div>
   </body>
 </html>

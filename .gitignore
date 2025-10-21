@@ -21,7 +21,7 @@ yarn-error.log*
 *.DS_Store
 Thumbs.db
 
-.claude_memory.md
+CLAUDE.md
 
 coverage/
 .nyc_output/

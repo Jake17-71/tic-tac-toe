@@ -55,7 +55,7 @@
   --input-height: 48px;
 
   --font-family-base: 'Rubik', sans-serif;
-  --font-family-mono: 'Roboto Mono', 'Courier New', Courier, monospace;
+  --font-family-mono: 'Roboto Mono', 'Courier New', courier, monospace;
 
   --container-width: #{fluid-to-laptop(
       $container-desktop-width,
