@@ -1,0 +1,36 @@
+@use '../helpers' as *;
+
+.footer {
+  @include flex-center;
+
+  padding: 20px var(--container-padding-x);
+  background-color: var(--bg-light);
+
+  &__link {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 16px;
+    color: var(--text);
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      background-color: var(--primary);
+      color: var(--bg);
+    }
+
+    @include focus-visible-no-typing;
+  }
+
+  &__icon {
+    @include square(24px);
+
+    flex-shrink: 0;
+  }
+
+  &__text {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
