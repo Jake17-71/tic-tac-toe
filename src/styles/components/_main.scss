@@ -1,0 +1,8 @@
+@use '../helpers' as *;
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-inline: var(--container-padding-x);
+}
