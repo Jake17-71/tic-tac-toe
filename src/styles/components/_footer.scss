@@ -3,8 +3,18 @@
 .footer {
   @include flex-center;
 
+  position: relative;
   padding: 20px var(--container-padding-x);
-  background-color: var(--bg-light);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background-color: var(--bg-light);
+  }
 
   &__link {
     display: flex;
