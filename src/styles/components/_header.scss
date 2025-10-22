@@ -1,11 +1,21 @@
 @use '../helpers' as *;
 
 .header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px var(--container-padding-x);
-  background-color: var(--bg-light);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background-color: var(--bg-light);
+  }
 
   &__logo {
     display: flex;
