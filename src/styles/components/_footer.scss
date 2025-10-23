@@ -5,7 +5,7 @@
 
   position: relative;
   flex-shrink: 0;
-  padding: 20px var(--container-padding-x);
+  padding: clamp(12px, 2.5vw, 15px) clamp(12px, 2.5vw, 20px);
 
   &::before {
     content: '';
@@ -19,14 +19,14 @@
 
   &__link {
     display: flex;
-    gap: 8px;
+    gap: clamp(6px, 1vw, 8px);
     align-items: center;
-    padding: 8px 16px;
+    padding: clamp(6px, 1vw, 8px) clamp(12px, 2vw, 16px);
     color: var(--text);
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     transition: background-color 0.2s ease, color 0.2s ease;
 
-    &:hover {
+    @include hover {
       background-color: var(--primary);
       color: var(--bg);
     }
@@ -35,13 +35,13 @@
   }
 
   &__icon {
-    @include square(24px);
+    @include square(clamp(20px, 3vw, 24px));
 
     flex-shrink: 0;
   }
 
   &__text {
-    font-size: 16px;
+    font-size: clamp(14px, 2vw, 16px);
     font-weight: 500;
   }
 }
