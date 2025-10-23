@@ -2,7 +2,8 @@
 
 .main {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-inline: var(--container-padding-x);
+  padding: clamp(12px, 2vw, 16px) var(--container-padding-x);
 }
