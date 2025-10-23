@@ -6,7 +6,7 @@
   flex-shrink: 0;
   justify-content: space-between;
   align-items: center;
-  padding: 16px var(--container-padding-x);
+  padding: clamp(12px, 3vw, 16px) var(--container-padding-x);
 
   &::before {
     content: '';
@@ -21,11 +21,12 @@
   &__logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: clamp(8px, 2vw, 12px);
   }
 
   &__icon {
     flex-shrink: 0;
+    font-size: clamp(24px, 5vw, 32px);
     color: var(--primary);
   }
 
