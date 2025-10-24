@@ -123,34 +123,6 @@
     }
   }
 
-  &__new-btn {
-    height: var(--input-height);
-    padding: 0 clamp(16px, 3vw, 24px);
-    color: var(--bg-dark);
-    font-size: clamp(14px, 1.8vw, 16px);
-    background-color: var(--primary);
-    border: var(--border-width-m) solid var(--primary);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: all var(--transition-duration-slow);
-    white-space: nowrap;
-
-    @include hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    &:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    @include focus-visible-no-typing;
-
-    @include tablet {
-      --input-height: 44px;
-    }
-  }
-
   &__info {
     display: flex;
     flex-wrap: wrap;
