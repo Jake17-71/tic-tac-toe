@@ -1,3 +1,5 @@
+import GameLogic from './gameLogic.js'
+
 const rootSelector = `[data-js-settings]`
 
 class gameMain {
@@ -6,6 +8,8 @@ class gameMain {
     boardSizeSelector: `[data-js-board-size]`,
     aiDifficulty: `[data-js-ai-difficulty]`,
     playerSymbolSelector: `[data-js-player-symbol]`,
+
+    gameBoardSelector: `[data-js-game-board]`,
   }
 
   stateClasses = {
@@ -15,14 +19,18 @@ class gameMain {
   constructor(rootElement) {
     this.rootElement = rootElement
     this.boardSizeElements = this.rootElement.querySelectorAll(this.selectors.boardSizeSelector)
-    this.aiDificultyElement = this.rootElement.querySelector(this.selectors.aiDifficulty)
+    this.aiDifficultyElement = this.rootElement.querySelector(this.selectors.aiDifficulty)
     this.playerSymbolElements = this.rootElement.querySelectorAll(this.selectors.playerSymbolSelector)
+    this.gameBoardElement = document.querySelector(this.selectors.gameBoardSelector)
 
     this.settings = {
       boardSize: this.getBoardSize(),
       playerSymbol: this.getPlayerSymbol(),
       aiDifficulty: this.getAiDifficulty(),
     }
+
+    this.gameLogic = null
+    this.initGame()
 
     this.bindEvent()
   }
@@ -32,7 +40,7 @@ class gameMain {
       button.classList.contains(this.stateClasses.isActive)
     )
 
-    return activeButton ? activeButton.dataset.jsBoardSize : '3'
+    return activeButton ? +activeButton.dataset.jsBoardSize : 3
   }
 
   getPlayerSymbol() {
@@ -44,7 +52,7 @@ class gameMain {
   }
 
   getAiDifficulty() {
-    return this.aiDificultyElement.value
+    return this.aiDifficultyElement.value
   }
 
   updateSettings() {
@@ -57,10 +65,25 @@ class gameMain {
       playerSymbol,
       aiDifficulty,
     }
+
+    this.gameLogic.updateSettings(this.settings)
   }
 
   recreateBoard(boardSize) {
+    this.gameBoardElement.innerHTML = ''
+    this.gameBoardElement.dataset.boardSize = boardSize
 
+    const size = +boardSize
+    for (let i = 0; i < Math.pow(size, 2); i++) {
+      const button = document.createElement('button')
+      button.classList.add('game__cell')
+      button.dataset.jsCell = ''
+      button.dataset.index = `${i}`
+      button.type = 'button'
+      this.gameBoardElement.appendChild(button)
+    }
+
+    this.initGame()
   }
 
   onBoardSizeButtonClick(event) {
@@ -90,6 +113,10 @@ class gameMain {
     this.updateSettings()
   }
 
+  initGame() {
+    this.gameLogic = new GameLogic(this.gameBoardElement, this.settings)
+  }
+
   bindEvent() {
     this.boardSizeElements.forEach(button =>
       button.addEventListener('click', (event) =>
@@ -103,7 +130,7 @@ class gameMain {
       )
     )
 
-    this.aiDificultyElement.addEventListener('change', () =>
+    this.aiDifficultyElement.addEventListener('change', () =>
       this.updateSettings()
     )
   }
