@@ -4,11 +4,17 @@ class GameLogic {
   selectors = {
     root: rootSelector,
     gameCellSelector: `[data-js-cell]`,
+    gameOverlaySelector: `[data-js-game-overlay]`,
+    gameOverlayTitleSelector: `[data-js-game-overlay-title]`,
+    newGameButtonSelector: `[data-js-new-game]`,
   }
 
   constructor(rootElement, settings) {
     this.rootElement = rootElement
     this.gameCellElements = this.rootElement.querySelectorAll(this.selectors.gameCellSelector)
+    this.gameOverlayElement = document.querySelector(this.selectors.gameOverlaySelector)
+    this.gameOverlayTitleElement = document.querySelector(this.selectors.gameOverlayTitleSelector)
+    this.newGameButtonElement = document.querySelector(this.selectors.newGameButtonSelector)
     this.settings = settings
     this.board = Array(this.settings.boardSize).fill(null).map(() => Array(this.settings.boardSize).fill(null))
     this.currentPlayer = settings.playerSymbol
@@ -151,16 +157,36 @@ class GameLogic {
     if (this.checkWin(symbol)) {
       this.gameActive = false
       this.winner = symbol
-      console.log(`Player ${symbol} wins!`)
-      // TODO: Показать сообщение о победе
+      this.showGameOverModal(`Player ${symbol} wins!`)
       return
     }
 
     if (this.checkDraw()) {
       this.gameActive = false
-      console.log('Draw!')
-      // TODO: Показать сообщение о ничьей
+      this.showGameOverModal('Draw!')
     }
+  }
+
+  showGameOverModal(message) {
+    this.gameOverlayTitleElement.textContent = message
+    this.gameOverlayElement.removeAttribute('hidden')
+  }
+
+  hideGameOverModal() {
+    this.gameOverlayElement.setAttribute('hidden', '')
+  }
+
+  resetGame() {
+    this.board = Array(this.settings.boardSize).fill(null).map(() => Array(this.settings.boardSize).fill(null))
+    this.gameActive = false
+    this.winner = null
+
+    this.gameCellElements.forEach(cell => {
+      cell.textContent = ''
+      cell.removeAttribute('data-value')
+    })
+
+    this.hideGameOverModal()
   }
 
   makeAiMove() {
@@ -408,14 +434,22 @@ class GameLogic {
     this.currentPlayer = settings.playerSymbol
     this.aiDifficulty = settings.aiDifficulty
     this.gameActive = false
+<<<<<<< HEAD
     this.winLength = this.getWinLength(settings.boardSize)
     this.winPatterns = this.generateWinPatterns(settings.boardSize, this.winLength)
+=======
+    this.winPatterns = this.generateWinPatterns(settings.boardSize)
+
+    this.resetGame()
+>>>>>>> game-over-modal
   }
 
   bindEvents() {
     this.gameCellElements.forEach(cell =>
       cell.addEventListener('click', (event) => this.onCellClick(event))
     )
+
+    this.newGameButtonElement.addEventListener('click', () => this.resetGame())
   }
 }
 
