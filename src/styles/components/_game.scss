@@ -156,6 +156,7 @@
   &__board-container {
     @include flex-center();
 
+    position: relative;
     flex: 1;
     min-height: 0;
     width: 100%;
@@ -190,18 +191,9 @@
       grid-template-rows: repeat(5, 1fr);
     }
 
-    @include tablet {
-      max-width: min(100%, 50vh);
-      max-height: min(100%, 50vh);
-      gap: 6px;
-      padding: 10px;
-    }
-
     @include mobile {
       max-width: min(100%, 45vh);
       max-height: min(100%, 45vh);
-      gap: 4px;
-      padding: 8px;
     }
   }
 
@@ -214,7 +206,7 @@
     border-radius: var(--border-radius);
     cursor: pointer;
     font-weight: 700;
-    font-size: clamp(28px, 4vw, 48px);
+    font-size: clamp(36px, 5vh, 72px);
     color: var(--text);
     transition: all var(--transition-duration-slow);
 
@@ -257,13 +249,98 @@
         background-color: var(--success);
       }
     }
+  }
+
+
+  &__overlay {
+    @include flex-center();
+
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(2px);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-duration-slow), visibility var(--transition-duration-slow);
+
+    &:not([hidden]) {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__overlay-content {
+    @include flex-center();
+
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-width: min(100%, 50vh);
+    max-height: min(100%, 50vh);
+    aspect-ratio: 1;
+    gap: clamp(16px, 3vw, 24px);
+    padding: clamp(24px, 4vw, 40px) clamp(32px, 5vw, 56px);
+    border: var(--border);
+    border-radius: var(--border-radius-l);
+    animation: slideIn 0.3s ease-out;
+
+    @include mobile {
+      max-width: min(100%, 45vh);
+      max-height: min(100%, 45vh);
+    }
+  }
+
+  &__overlay-title {
+    font-size: clamp(20px, 3.5vw, 32px);
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+    margin: 0;
 
     @include tablet {
-      font-size: clamp(24px, 5vw, 36px);
+      font-size: clamp(18px, 4vw, 28px);
     }
 
     @include mobile {
-      font-size: clamp(18px, 5vw, 28px);
+      font-size: clamp(16px, 4.5vw, 24px);
+    }
+  }
+
+  &__overlay-button {
+    height: clamp(44px, 6vw, 52px);
+    padding: 0 clamp(24px, 4vw, 40px);
+    color: var(--bg-dark);
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 600;
+    background-color: var(--primary);
+    border: 2px solid var(--primary);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-duration-slow);
+
+    @include hover {
+      background-color: transparent;
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    @include focus-visible-no-typing;
+
+    @include tablet {
+      height: 48px;
+      padding: 0 32px;
+      font-size: 16px;
+    }
+
+    @include mobile {
+      height: 44px;
+      padding: 0 28px;
+      font-size: 15px;
     }
   }
 }
@@ -276,5 +353,17 @@
 
   50% {
     transform: scale(1.1);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
