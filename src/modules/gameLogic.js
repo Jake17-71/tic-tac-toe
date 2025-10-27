@@ -7,6 +7,8 @@ class GameLogic {
     gameOverlaySelector: `[data-js-game-overlay]`,
     gameOverlayTitleSelector: `[data-js-game-overlay-title]`,
     newGameButtonSelector: `[data-js-new-game]`,
+    gameStatusSelector: `[data-js-game-status]`,
+    gameScoreSelector: `[data-js-game-score]`,
   }
 
   constructor(rootElement, settings) {
@@ -15,6 +17,8 @@ class GameLogic {
     this.gameOverlayElement = document.querySelector(this.selectors.gameOverlaySelector)
     this.gameOverlayTitleElement = document.querySelector(this.selectors.gameOverlayTitleSelector)
     this.newGameButtonElement = document.querySelector(this.selectors.newGameButtonSelector)
+    this.gameStatusElement = document.querySelector(this.selectors.gameStatusSelector)
+    this.gameScoreElement = document.querySelector(this.selectors.gameScoreSelector)
     this.settings = settings
     this.board = Array(this.settings.boardSize).fill(null).map(() => Array(this.settings.boardSize).fill(null))
     this.currentPlayer = settings.playerSymbol
@@ -23,6 +27,10 @@ class GameLogic {
     this.winner = null
     this.winLength = this.getWinLength(this.settings.boardSize)
     this.winPatterns = this.generateWinPatterns(this.settings.boardSize, this.winLength)
+
+    const savedScore = this.loadScoreFromStorage()
+    this.userWins = savedScore.userWins
+    this.botWins = savedScore.botWins
 
     this.init()
   }
@@ -33,8 +41,45 @@ class GameLogic {
     return boardSize === 3 ? 3 : 4
   }
 
+  loadScoreFromStorage() {
+    try {
+      const savedScore = localStorage.getItem('ticTacToeScore')
+      if (savedScore) {
+        const score = JSON.parse(savedScore)
+        return {
+          userWins: score.userWins || 0,
+          botWins: score.botWins || 0,
+        }
+      }
+    } catch (error) {
+
+    }
+    return { userWins: 0, botWins: 0 }
+  }
+
+  saveScoreToStorage() {
+    try {
+      const score = {
+        userWins: this.userWins,
+        botWins: this.botWins,
+      }
+      localStorage.setItem('ticTacToeScore', JSON.stringify(score))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   init() {
     this.bindEvents()
+    this.updateScoreDisplay()
+    this.checkForBotFirstMove()
+  }
+
+  checkForBotFirstMove() {
+    if (this.settings.playerSymbol === 'X') {
+      this.gameActive = true
+      this.makeAiMove()
+    }
   }
 
   generateWinPatterns(boardSize, winLength) {
@@ -145,6 +190,10 @@ class GameLogic {
     this.updateCellUI(index, symbol)
 
     this.checkGameEnd(symbol)
+
+    if (this.gameActive || !this.winner) {
+      this.updateGameStatus(symbol)
+    }
   }
 
   updateCellUI(index, symbol) {
@@ -153,10 +202,38 @@ class GameLogic {
     cell.dataset.value = symbol
   }
 
+  updateGameStatus(currentSymbol) {
+    if (!this.gameStatusElement) {
+      return
+    }
+
+    const nextSymbol = currentSymbol === 'X' ? 'O' : 'X'
+    this.gameStatusElement.textContent = `Player ${nextSymbol}'s turn`
+  }
+
+  updateScoreDisplay() {
+    if (!this.gameScoreElement) {
+      return
+    }
+
+    this.gameScoreElement.textContent = `User: ${this.userWins} | Bot: ${this.botWins}`
+  }
+
   checkGameEnd(symbol) {
     if (this.checkWin(symbol)) {
       this.gameActive = false
       this.winner = symbol
+
+      const aiSymbol = this.settings.playerSymbol === 'X' ? 'O' : 'X'
+      if (symbol === this.settings.playerSymbol) {
+        this.userWins++
+      } else if (symbol === aiSymbol) {
+        this.botWins++
+      }
+
+      this.saveScoreToStorage()
+      this.updateScoreDisplay()
+
       this.showGameOverModal(`Player ${symbol} wins!`)
       return
     }
@@ -187,6 +264,13 @@ class GameLogic {
     })
 
     this.hideGameOverModal()
+
+    if (this.gameStatusElement) {
+      const firstPlayer = this.settings.playerSymbol === 'X' ? 'O' : this.settings.playerSymbol
+      this.gameStatusElement.textContent = `Player ${firstPlayer}'s turn`
+    }
+
+    this.checkForBotFirstMove()
   }
 
   makeAiMove() {
@@ -434,14 +518,10 @@ class GameLogic {
     this.currentPlayer = settings.playerSymbol
     this.aiDifficulty = settings.aiDifficulty
     this.gameActive = false
-<<<<<<< HEAD
     this.winLength = this.getWinLength(settings.boardSize)
     this.winPatterns = this.generateWinPatterns(settings.boardSize, this.winLength)
-=======
-    this.winPatterns = this.generateWinPatterns(settings.boardSize)
 
     this.resetGame()
->>>>>>> game-over-modal
   }
 
   bindEvents() {
