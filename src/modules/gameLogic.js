@@ -25,6 +25,7 @@ class GameLogic {
     this.aiDifficulty = settings.aiDifficulty
     this.gameActive = false
     this.winner = null
+    this.winningPattern = null
     this.winLength = this.getWinLength(this.settings.boardSize)
     this.winPatterns = this.generateWinPatterns(this.settings.boardSize, this.winLength)
 
@@ -140,6 +141,7 @@ class GameLogic {
       })
 
       if (isWinningPattern) {
+        this.winningPattern = pattern
         return true
       }
     }
@@ -233,6 +235,7 @@ class GameLogic {
 
       this.saveScoreToStorage()
       this.updateScoreDisplay()
+      this.highlightWinningCells()
 
       this.showGameOverModal(`Player ${symbol} wins!`)
       return
@@ -242,6 +245,27 @@ class GameLogic {
       this.gameActive = false
       this.showGameOverModal('Draw!')
     }
+  }
+
+  highlightWinningCells() {
+    if (!this.winningPattern) {
+      return
+    }
+
+    for (const [row, col] of this.winningPattern) {
+      const index = row * this.settings.boardSize + col
+      const cell = this.gameCellElements[index]
+      if (cell) {
+        cell.classList.add('game__cell--winner')
+      }
+    }
+  }
+
+  clearWinningHighlight() {
+    this.gameCellElements.forEach(cell => {
+      cell.classList.remove('game__cell--winner')
+    })
+    this.winningPattern = null
   }
 
   showGameOverModal(message) {
@@ -257,6 +281,8 @@ class GameLogic {
     this.board = Array(this.settings.boardSize).fill(null).map(() => Array(this.settings.boardSize).fill(null))
     this.gameActive = false
     this.winner = null
+
+    this.clearWinningHighlight()
 
     this.gameCellElements.forEach(cell => {
       cell.textContent = ''
