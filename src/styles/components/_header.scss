@@ -37,4 +37,10 @@
     line-height: 1.2;
     color: var(--text);
   }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 2vw, 12px);
+  }
 }
